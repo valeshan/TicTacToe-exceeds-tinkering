@@ -44,8 +44,8 @@
 
 
   //show player name on board screen
-  $("#player1").append("<div><p id='board-player1' style='font-size: 3em; color: black;'></p></div>");
-  $("#player2").append("<div><p id='board-player2' style='font-size: 3em; color: black;'></p></div>");
+  $("#player1").append("<div><p id='board-player1' style='font-size: 3em; color: black; margin: 0;'></p></div>");
+  $("#player2").append("<div><p id='board-player2' style='font-size: 3em; color: black; margin: 0;'></p></div>");
 
 
 
@@ -129,12 +129,14 @@
     if($("#player-name1").val() != ""){
       genPlayer1.person = $("#player-name1").val();
       $("#board-player1").text(genPlayer1.person);
+      $(".players").css("width", "28%");
     } else{
       $("#board-player1").remove();
     }
     if($("#player-name2").val() != ""){
-      genPlayer2.person = $("#player-name2").val() + " your imaginary friend";
+      genPlayer2.person = $("#player-name2").val() + " the comp";
       $("#board-player2").text(genPlayer2.person);
+      $(".players").css("width", "28%");
     }else{
       $("#board-player2").remove();
     }
@@ -145,6 +147,7 @@
       availableBox.addClass("box-filled-2");
       $player2.removeClass("active");
       $player1.addClass("active");
+      genPlayer2.squares +=1;
     }
   });
 
@@ -161,15 +164,18 @@
     if($("#player-name1").val() != ""){
       genPlayer1.person = $("#player-name1").val();
       $("#board-player1").text(genPlayer1.person);
+      $(".players").css("width", "28%");
     } else{
       $("#board-player1").remove();
     }
     if($("#player-name2").val() != ""){
       genPlayer2.person = $("#player-name2").val();
       $("#board-player2").text(genPlayer2.person);
+      $(".players").css("width", "28%");
     }else{
       $("#board-player2").remove();
     }
+
   })
 
 
@@ -205,6 +211,8 @@
 
 
   //other genPlayer to get active class and current genPlayer remove active class; squares +=1
+  //if computer is playing, comPlayer is active, therefore auto-selects random empty box
+  // and returns active class to player1
   $box.click(function(){
     if(!$(this).is("[class*='box-filled']")){
       if($player1.hasClass("active")){
@@ -219,6 +227,7 @@
           availableBox.addClass("box-filled-2");
           $player2.removeClass("active");
           $player1.addClass("active");
+          genPlayer2.squares +=1;
         }
       } else if (!$player1.hasClass("active") && genPlayer2.active == true){
         $(this).css("background-image", $p2SVG);
@@ -317,7 +326,6 @@
         }
       }
   })
-
 
 
   //**************** RESTART GAME ****************//
