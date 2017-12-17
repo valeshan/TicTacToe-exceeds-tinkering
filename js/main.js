@@ -79,16 +79,6 @@
     active : false
   };
 
-  //**************** ID ALL BOXES ****************//
-
-  const idBoxes = () => {
-    for(let i = 0; i < $box.length; i++){
-      $($box[i]).attr("id", [i]);
-      };
-    }
-
-  idBoxes();
-
 
   //**************** COIN TOSS OBJECT ****************//
 
@@ -149,6 +139,13 @@
       $("#board-player2").remove();
     }
     coinToss.firstPlayer();
+    if (!$player1.hasClass("active") && comPlayer.active == true){
+      let availableBox = comChoice.emptyBox();
+      availableBox.css("background-image", $p2SVG);
+      availableBox.addClass("box-filled-2");
+      $player2.removeClass("active");
+      $player1.addClass("active");
+    }
   });
 
 
@@ -229,13 +226,6 @@
         $player2.removeClass("active");
         $player1.addClass("active");
         genPlayer2.squares +=1;
-      }
-      else if (!$player1.hasClass("active") && comPlayer.active == true){
-        let availableBox = comChoice.emptyBox();
-        availableBox.css("background-image", $p2SVG);
-        availableBox.addClass("box-filled-2");
-        $player2.removeClass("active");
-        $player1.addClass("active");
       }
     }
   });
