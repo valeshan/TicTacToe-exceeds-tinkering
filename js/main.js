@@ -114,31 +114,19 @@
   //**************** SINGLE PLAYER START SEQUENCE ****************//
 
 
-  const comChoice={
-
-    //random number generator between 0 and the length of an array argument
-    randSqNum : function(arr){
-                  return Math.floor(Math.random(1)*arr.length);
-                },
-
-    //random box
-    //randBox : $($box[randSqNum]),
-
-    //checks if square is an empty square, then fills it
-    ranFillaBox: function(){
-                  return $(this).css("background-image", comPlayer.icon);
-                },
-
+  let comChoice = {
     //available boxes left
-    emptyBoxes: function(){
+    emptyBox: function(){
                   let emptyBoxArr = [];
+                  let randSqNum = 0;
                   for(let i = 0; i < $box.length; i++){
                     if(!$($box[i]).is("[class*='box-filled']")){
                       emptyBoxArr.push($($box[i]));
-                    };
+                    }
+                  };
+                  randSqNum = Math.floor(Math.random(1)*emptyBoxArr.length);
+                  return $(emptyBoxArr[randSqNum]);
                   }
-                  return emptyBoxArr;
-                }
     }
 
 
@@ -229,10 +217,11 @@
         $player2.addClass("active");
         genPlayer1.squares +=1;
         if(comPlayer.active == true){
-          let emptyBoxList = comChoice.emptyBoxes();
-          let emptyBox = $($box[comPlayer.randSqNum(emptyBoxList)]);
-          emptyBox.css("background-image", $p2SVG);
-          emptyBox.addClass("box-filled-2");
+          let availableBox = comChoice.emptyBox();
+          availableBox.css("background-image", $p2SVG);
+          availableBox.addClass("box-filled-2");
+          $player2.removeClass("active");
+          $player1.addClass("active");
         }
       } else if (!$player1.hasClass("active") && genPlayer2.active == true){
         $(this).css("background-image", $p2SVG);
@@ -240,8 +229,13 @@
         $player2.removeClass("active");
         $player1.addClass("active");
         genPlayer2.squares +=1;
-      //  $(this).attr("id", filledSqs.length);
-      //  filledSqs += $(this);
+      }
+      else if (!$player1.hasClass("active") && comPlayer.active == true){
+        let availableBox = comChoice.emptyBox();
+        availableBox.css("background-image", $p2SVG);
+        availableBox.addClass("box-filled-2");
+        $player2.removeClass("active");
+        $player1.addClass("active");
       }
     }
   });
