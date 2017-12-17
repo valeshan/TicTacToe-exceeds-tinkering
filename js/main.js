@@ -79,6 +79,16 @@
     active : false
   };
 
+  //**************** ID ALL BOXES ****************//
+
+  const idBoxes = () => {
+    for(let i = 0; i < $box.length; i++){
+      $($box[i]).attr("id", [i]);
+      };
+    }
+
+  idBoxes();
+
 
   //**************** COIN TOSS OBJECT ****************//
 
@@ -104,13 +114,30 @@
   //**************** SINGLE PLAYER START SEQUENCE ****************//
 
 
-  const randomSquare={
-    //random number generator between 0-8
-    randSqNum : Math.floor(Math.random(1)*9),
+  const comChoice={
+
+    //random number generator between 0 and the length of an array argument
+    randSqNum : function(arr){
+                  return Math.floor(Math.random(1)*arr.length);
+                },
+
+    //random box
+    //randBox : $($box[randSqNum]),
 
     //checks if square is an empty square, then fills it
     ranFillaBox: function(){
-                  return $($box[randSqNum]).css("background-image", comPlayer.icon);
+                  return $(this).css("background-image", comPlayer.icon);
+                },
+
+    //available boxes left
+    emptyBoxes: function(){
+                  let emptyBoxArr = [];
+                  for(let i = 0; i < $box.length; i++){
+                    if(!$($box[i]).is("[class*='box-filled']")){
+                      emptyBoxArr.push($($box[i]));
+                    };
+                  }
+                  return emptyBoxArr;
                 }
     }
 
@@ -201,16 +228,20 @@
         $player1.removeClass("active");
         $player2.addClass("active");
         genPlayer1.squares +=1;
-        $(this).attr("id", filledSqs.length);
-        filledSqs += $(this);
-      } else{
+        if(comPlayer.active == true){
+          let emptyBoxList = comChoice.emptyBoxes();
+          let emptyBox = $($box[comPlayer.randSqNum(emptyBoxList)]);
+          emptyBox.css("background-image", $p2SVG);
+          emptyBox.addClass("box-filled-2");
+        }
+      } else if (!$player1.hasClass("active") && genPlayer2.active == true){
         $(this).css("background-image", $p2SVG);
         $(this).addClass("box-filled-2");
         $player2.removeClass("active");
         $player1.addClass("active");
         genPlayer2.squares +=1;
-        $(this).attr("id", filledSqs.length);
-        filledSqs += $(this);
+      //  $(this).attr("id", filledSqs.length);
+      //  filledSqs += $(this);
       }
     }
   });
